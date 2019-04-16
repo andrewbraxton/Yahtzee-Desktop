@@ -1,25 +1,24 @@
 #include "ofApp.h"
 
-#include <iostream>
+//#include <iostream>
 
 using namespace yahtzee;
 
 void ofApp::setup() {
-  for (int i = 0; i < dice.size(); i++) {
-    dice[i] = Die();
-  }
-
   roll_sound.load("/sounds/diceroll.mp3");
 }
 
 void ofApp::update() { 
 }
 
-void ofApp::draw() { 
-  int xinterval = ofGetWidth() / 6;
-  int yinterval = ofGetHeight() / 6;
-   for (int i = 0; i < dice.size(); i++) {
+void ofApp::draw() {
+  int xinterval = ofGetWidth() / kNumDice;
+  int yinterval = ofGetHeight() / kNumDice;
+   for (int i = 0; i < kNumDice; i++) {
      dice[i].Draw(xinterval * i, ofGetHeight() - yinterval, xinterval, yinterval);
+     keep_toggles[i].setup("Keep", true, xinterval, 50);
+     keep_toggles[i].setPosition(xinterval * i, ofGetHeight() - yinterval - 50);
+     keep_toggles[i].draw();
    }
 }
 
