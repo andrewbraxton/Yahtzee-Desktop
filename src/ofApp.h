@@ -1,8 +1,9 @@
 #pragma once
 
 #include "ofMain.h"
-
 #include "ofxDatGui.h"
+
+#include "die.h"
 
 class ofApp : public ofBaseApp {
  public:
@@ -15,4 +16,6 @@ class ofApp : public ofBaseApp {
   void windowResized(int w, int h);
 
   std::array<ofImage, 6> dice_imgs;
+
+  std::array<yahtzee::Die, 6> dice;
 };
