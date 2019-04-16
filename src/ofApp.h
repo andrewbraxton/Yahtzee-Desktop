@@ -15,7 +15,7 @@ class ofApp : public ofBaseApp {
   void keyReleased(int key);
   void windowResized(int w, int h);
 
-  std::array<ofImage, 6> dice_imgs;
-
   std::array<yahtzee::Die, 6> dice;
+
+  ofSoundPlayer roll_sound;
 };

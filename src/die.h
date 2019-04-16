@@ -3,6 +3,9 @@
 namespace yahtzee {
 
 class Die {
+
+    
+
     public:
         Die();
 
@@ -16,6 +19,7 @@ class Die {
         ofImage image_;
 
         std::string GetImagePath(int value);
+
 };
 
 }
