@@ -4,6 +4,18 @@ using namespace yahtzee;
 
 Die::Die() {
     Roll();
+    Setup(image_.getWidth(), image_.getHeight());
+    SetPosition(0, 0);
+}
+
+void Die::Setup(int w, int h) {
+    width_ = w;
+    height_ = h;
+}
+
+void Die::SetPosition(int x, int y) {
+    x_ = x;
+    y_ = y;
 }
 
 void Die::Roll() {
@@ -13,8 +25,8 @@ void Die::Roll() {
     image_ = ofImage(GetImagePath(dice_roll));
 }
 
-void Die::Draw(float x, float y, float w, float h) {
-    image_.draw(x, y, w, h);
+void Die::Draw() {
+    image_.draw(x_, y_, width_, height_);
 }
 
 int Die::get_value() {
