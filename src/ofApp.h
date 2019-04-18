@@ -19,7 +19,12 @@ class ofApp : public ofBaseApp {
 
   std::array<yahtzee::Die, kNumDice> dice;
 
+  ofxLabel bonus;
+  ofxButton roll;
+  ofxLabel score;
   std::array<ofxToggle, kNumDice> keep_toggles;
 
   ofSoundPlayer roll_sound;
+
+
 };
