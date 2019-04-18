@@ -12,3 +12,7 @@
 * Managed to fix the `data` folder issue by writing my own `.gitignore`
 * Went crawling back to `ofxGui` because I ended up not liking `ofxDatGui`
     * Made a row of toggles for keeping dice appear but they can't be clicked on for some reason
+    * Fixed the clicking issue; ofxToggle.setup() needed to go in ofApp:setup() (who would've thunk it)
+    * Made additional GUI elements for displaying score, displaying whether bonus has been earned, and rolling dice
+    * Decided to have ofApp handle all GUI elements so I moved die image handling to ofApp instead of Die class
+
