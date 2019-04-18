@@ -8,6 +8,9 @@
 class ofApp : public ofBaseApp {
  public:
   static const int kNumDice = 5;
+  static const int kWindowSize = 1460;
+  static const int kDrawInterval = kWindowSize / kNumDice;
+  static const int kElementHeight = 75;
 
   void setup();
   void update();

@@ -9,7 +9,6 @@ Die::Die() {
 void Die::Roll() {
     int dice_roll = ofRandom(1,7);
     value_ = dice_roll;
-    image_ = ofImage(GetImagePath(dice_roll));
 }
 
 int Die::get_value() {
