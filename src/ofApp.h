@@ -8,8 +8,7 @@
 class ofApp : public ofBaseApp {
  public:
 
-  static const int kPaddingAmount = 0;
-  static const int kWindowSize = 1460 + 2*kPaddingAmount;
+  static const int kWindowSize = 1635;
   const float kDieSize = 0.20 * kWindowSize;
   const float kKeepSizeX = kDieSize;
   const float kKeepSizeY = 0.05 * kWindowSize;
@@ -19,6 +18,7 @@ class ofApp : public ofBaseApp {
   const float kScoreSizeY = kRollSizeY;
   const float kCategorySizeX = 0.50 * kWindowSize;
   const float kCategorySizeY = 0.10 * kWindowSize;
+  const int kTextPadding = 30;
 
   const std::array<std::string, 13> kCategoryNames =
     {
@@ -55,6 +55,6 @@ class ofApp : public ofBaseApp {
   ofSoundPlayer roll_sound;
 
  private:
-  std::string GetImagePath(int value); // for locating dieX.png, X is 1-6 obv
+  std::string GetImagePath(int value); // for locating diceX.png, X is 1-6 obv
 
 };

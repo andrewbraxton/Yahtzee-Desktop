@@ -23,26 +23,28 @@ void ofApp::setup() {
 void ofApp::update() {}
 
 void ofApp::draw() {
+  ofxGuiSetTextPadding(kTextPadding);
+
   // drawing from top down
   for (int i  = 0; i < kNumCategories; i++) {
     if (i < 6) { // first 6 categories appear on first half of screen
-      score_categories[i].setPosition(kPaddingAmount, kPaddingAmount + kCategorySizeY*i);
+      score_categories[i].setPosition(0, kCategorySizeY*i);
     } else {     // last 6 categories appear on second half of screen
-      score_categories[i].setPosition(kPaddingAmount + kCategorySizeX, kPaddingAmount + kCategorySizeY*(i-6));
+      score_categories[i].setPosition(kCategorySizeX, kCategorySizeY*(i-6));
     }
     score_categories[i].draw();
   }
-  bonus.setPosition(kPaddingAmount, kPaddingAmount + kCategorySizeY * 6);
-  roll.setPosition(kPaddingAmount, kPaddingAmount + kCategorySizeY * 7);
-  score.setPosition(kPaddingAmount + kRollSizeX, kPaddingAmount + kCategorySizeY * 7);
+  bonus.setPosition(0, kCategorySizeY * 6);
+  roll.setPosition(0, kCategorySizeY * 7);
+  score.setPosition(kRollSizeX, kCategorySizeY * 7);
   bonus.draw();
   roll.draw();
   score.draw();
 
   // drawing from bottom up
   for (int i = 0; i < kNumDice; i++) {
-    dice[i].draw(kPaddingAmount + kDieSize * i, kWindowSize - kPaddingAmount - kDieSize);
-    keeps[i].setPosition(kPaddingAmount + kKeepSizeX * i, kWindowSize - kPaddingAmount - kDieSize - kKeepSizeY);
+    dice[i].draw(kDieSize * i, kWindowSize - 0 - kDieSize);
+    keeps[i].setPosition(kKeepSizeX * i, kWindowSize - 0 - kDieSize - kKeepSizeY);
     keeps[i].draw();
   }
 }
