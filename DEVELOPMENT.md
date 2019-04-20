@@ -16,7 +16,9 @@
     * Made additional GUI elements for displaying score, displaying whether bonus has been earned, and rolling dice
     * Decided to have ofApp handle all GUI elements so I moved die image handling to ofApp instead of Die class
     * Began working on adding the scoring categories to the GUI, ended up having to sketch my interface on paper to figure out how to best position things on the screen
-    * Got scoring categories to show up but the entire window seems to have an issue with padding
-        * Padding factor I added to compensate not working
+* Entire window seems to have an issue with padding
+    * Padding factor I added to compensate not working
     * Hitboxes for the scoring categories are wonky
+    * Kind of fixed this by turning off window border but now the window will have to be unmovable as well as unresizable
+    
 
