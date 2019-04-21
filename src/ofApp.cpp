@@ -26,7 +26,7 @@ void ofApp::draw() {
   ofxGuiSetTextPadding(kTextPadding);
 
   // drawing from top down
-  for (int i  = 0; i < kNumCategories; i++) {
+  for (int i  = 0; i < score_categories.size(); i++) {
     if (i < 6) { // first 6 categories appear on first half of screen
       score_categories[i].setPosition(0, kCategorySizeY*i);
     } else {     // last 6 categories appear on second half of screen
