@@ -42,6 +42,10 @@ class ofApp : public ofBaseApp {
   void draw();
 
   void keyPressed(int key);
+  void rollButtonPressed();
+  //void keepTogglePressed(bool& toggle_on);
+
+  yahtzee::Engine engine;
 
   // GUI elements
   std::array<ofImage, yahtzee::kNumDice> dice;
