@@ -1,7 +1,7 @@
 #pragma once
 
 #include <array>
-#include <utility>
+#include <vector>
 
 namespace yahtzee {
 
@@ -13,10 +13,10 @@ class Engine {
 
     public:
         Engine();
-        void Roll();
 
+        void RollDice();
+        void UpdateKeepInfo(std::vector<bool> keep_info);
         std::array<int, kNumDice> GetDiceValues();
-
     private:
         struct Die {
             Die();
@@ -41,9 +41,9 @@ class Engine {
             CHANCE
         };
 
-        // int score_;
-        // int upper_section_score_;
-        // bool yahtzee_bonus_enabled_;
+        int score_;
+        int upper_section_score_;
+        bool yahtzee_bonus_enabled_;
         std::array<Die, kNumDice> dice_;
         //std::array<std::pair<Category, value>, kNumCategories> category_values_;
 

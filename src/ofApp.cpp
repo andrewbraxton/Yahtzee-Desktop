@@ -10,21 +10,21 @@ void ofApp::setup() {
   for (int i = 0; i < kNumDice; i++) {
     dice[i].load(GetImagePath(i + 1));
     dice[i].resize(kDieSize, kDieSize);
-    keeps[i].setup("Keep", false, kKeepSizeX, kKeepSizeY);
-    //keeps[i].addListener(this, )
+
+    std::string keep_label = "Keep [" + std::to_string(i+1) + "]";
+    keeps[i].setup(keep_label, false, kKeepSizeX, kKeepSizeY);
+    keeps[i].addListener(this, &ofApp::keepTogglePressed);
   }
 
   bonus.setup("Bonus", "0/63", kCategorySizeX, kCategorySizeY);
-  roll.setup("Roll (0/3)", kRollSizeX, kRollSizeY);
+  roll.setup("Roll [SPACE] (0/3)", kRollSizeX, kRollSizeY);
   roll.addListener(this, &ofApp::rollButtonPressed);
   score.setup("Score", "0", kScoreSizeX, kScoreSizeY);
 
   roll_sound.load("/sounds/diceroll.mp3");
 }
 
-void ofApp::update() {
-  
-}
+void ofApp::update() {}
 
 void ofApp::draw() {
   ofxGuiSetTextPadding(kTextPadding);
@@ -54,7 +54,7 @@ void ofApp::draw() {
 }
 
 void ofApp::rollButtonPressed() {
-  engine.Roll();
+  engine.RollDice();
   std::array<int, kNumDice> values = engine.GetDiceValues();
   for (int i = 0; i < kNumDice; i++) {
     dice[i].load(GetImagePath(values[i]));
@@ -62,7 +62,17 @@ void ofApp::rollButtonPressed() {
   }
 }
 
-// void ofApp::keepTogglePressed(bool& toggle_on) {}
+void ofApp::keepTogglePressed(bool& toggle_on) {
+  std::vector<bool> keep_info;
+  for (auto toggle: keeps) {
+    if (toggle) {
+      keep_info.push_back(true);
+    } else {
+      keep_info.push_back(false);
+    }
+  }
+  engine.UpdateKeepInfo(keep_info);
+}
 
 void ofApp::keyPressed(int key) {}
 

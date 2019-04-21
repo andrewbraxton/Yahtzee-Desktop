@@ -5,16 +5,22 @@
 using namespace yahtzee;
 
 Engine::Engine() {
-    // score_ = 0;
-    // upper_section_score_ = 0;
-    // yahtzee_bonus_enabled_ = false;
+    score_ = 0;
+    upper_section_score_ = 0;
+    yahtzee_bonus_enabled_ = false;
 }
 
-void Engine::Roll() {
+void Engine::RollDice() {
     for (Die& die: dice_) {
         if (!die.keep) {
             die.Roll();
         }
+    }
+}
+
+void Engine::UpdateKeepInfo(std::vector<bool> keep_info) {
+    for (int i = 0; i < dice_.size(); i++) {
+        dice_[i].keep = keep_info[i];
     }
 }
 
