@@ -18,24 +18,8 @@ class ofApp : public ofBaseApp {
   const float kScoreSizeY = kRollSizeY;
   const float kCategorySizeX = 0.50 * kWindowSize;
   const float kCategorySizeY = 0.10 * kWindowSize;
+  const float kCategoryValueSize = kCategorySizeY;
   const int kTextPadding = 30;
-
-  const std::array<std::string, 13> kCategoryNames =
-    {
-        "Ones",
-        "Twos",
-        "Threes",
-        "Fours",
-        "Fives",
-        "Sixes",
-        "Three of a Kind",
-        "Four of a Kind",
-        "Full House",
-        "Small Straight",
-        "Large Straight",
-        "Yahtzee!",
-        "Chance"
-    };
 
   void setup();
   void update();
@@ -49,7 +33,8 @@ class ofApp : public ofBaseApp {
   yahtzee::Engine engine;
 
   // GUI elements, top to bottom
-  std::array<ofxToggle, yahtzee::kNumCategories> score_categories;
+  std::array<ofxToggle, yahtzee::kNumCategories> categories;
+  std::array<ofxLabel, yahtzee::kNumCategories> category_values;
   ofxLabel bonus;
   ofxButton roll;
   ofxLabel score;

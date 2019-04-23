@@ -3,9 +3,13 @@
 using namespace yahtzee;
 
 void ofApp::setup() {
-  for (int i = 0; i < score_categories.size(); i++) {
-    score_categories[i].setup(kCategoryNames[i], false, kCategorySizeX, kCategorySizeY);
-    score_categories[i].addListener(this, &ofApp::categoryPressed);
+  ofxGuiSetTextPadding(kTextPadding);
+
+  for (int i = 0; i < categories.size(); i++) {
+    categories[i].setup(kCategoryNames[i], false, kCategorySizeX, kCategorySizeY);
+    categories[i].addListener(this, &ofApp::categoryPressed);
+    category_values[i].setup("", "0", kCategoryValueSize, kCategoryValueSize);
+    category_values[i].setDefaultTextPadding(0);
   }
   bonus.setup("Bonus", "0/63", kCategorySizeX, kCategorySizeY);
   roll.setup("Roll [SPACE] (0/3)", kRollSizeX, kRollSizeY);
@@ -26,16 +30,20 @@ void ofApp::setup() {
 void ofApp::update() {}
 
 void ofApp::draw() {
-  ofxGuiSetTextPadding(kTextPadding);
+  
 
   // drawing from top down
-  for (int i  = 0; i < score_categories.size(); i++) {
+  for (int i  = 0; i < categories.size(); i++) {
     if (i < 6) { // first 6 categories appear on first half of screen
-      score_categories[i].setPosition(0, kCategorySizeY*i);
+      categories[i].setPosition(0, kCategorySizeY*i);
+      category_values[i].setPosition(kCategorySizeX - kCategoryValueSize, kCategoryValueSize*i);
     } else {     // last 6 categories appear on second half of screen
-      score_categories[i].setPosition(kCategorySizeX, kCategorySizeY*(i-6));
+      categories[i].setPosition(kCategorySizeX, kCategorySizeY*(i-6));
+      category_values[i].setPosition(2*kCategorySizeX - kCategoryValueSize, kCategoryValueSize*(i-6));
     }
-    score_categories[i].draw();
+    categories[i].draw();
+    
+    category_values[i].draw();
   }
   bonus.setPosition(0, kCategorySizeY * 6);
   roll.setPosition(0, kCategorySizeY * 7);
@@ -66,7 +74,7 @@ void ofApp::categoryPressed(const void* sender, bool& toggle_on) {
     return;
   }
   ofParameter<bool>* pressed = (ofParameter<bool>*)sender;
-  for (auto& category: score_categories) {
+  for (auto& category: categories) {
     if (category.getName() != pressed->getName()) {
       category = false;
     }

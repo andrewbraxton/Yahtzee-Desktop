@@ -8,6 +8,9 @@ Engine::Engine() {
     score_ = 0;
     upper_section_score_ = 0;
     yahtzee_bonus_enabled_ = false;
+    for (auto category_name: kCategoryNames) {
+        category_values_[category_name] = 0;
+    }
 }
 
 void Engine::RollDice() {
