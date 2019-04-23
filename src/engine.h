@@ -2,7 +2,6 @@
 
 #include <array>
 #include <vector>
-#include <map>
 
 namespace yahtzee {
 
@@ -50,10 +49,10 @@ class Engine {
         };
 
         void CalculateCategoryValues();
-        std::map<int, int> CountDiceTypes();
-        bool HasThreeOfAKind(std::map<int, int> dice_type_counts);
-        bool HasFourOfAKind(std::map<int, int> dice_type_counts);
-        bool HasYahtzee(std::map<int, int> dice_type_counts);
+        std::array<int, 6> CountDiceTypes();
+        bool HasThreeOfAKind(std::array<int, 6> dice_type_counts);
+        bool HasFourOfAKind(std::array<int, 6> dice_type_counts);
+        bool HasYahtzee(std::array<int, 6> dice_type_counts);
         //int CalculateTotalDiceValue();
 
         int score_;

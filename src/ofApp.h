@@ -33,7 +33,7 @@ class ofApp : public ofBaseApp {
   yahtzee::Engine engine;
 
   // GUI elements, top to bottom
-  std::array<ofxToggle, yahtzee::kNumCategories> categories;
+  std::array<ofxToggle, yahtzee::kNumCategories> category_toggles;
   std::array<ofxLabel, yahtzee::kNumCategories> category_values;
   ofxLabel bonus;
   ofxButton roll;

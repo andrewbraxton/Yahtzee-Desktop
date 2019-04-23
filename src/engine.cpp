@@ -2,6 +2,8 @@
 
 #include "ofMain.h"
 
+#include <algorithm>
+
 using namespace yahtzee;
 
 Engine::Engine() {
@@ -46,10 +48,11 @@ void Engine::Die::Roll() {
 }
 
 void Engine::CalculateCategoryValues() {
-    std::map<int, int> dice_type_counts = CountDiceTypes();
+    category_values_.fill(0);
+    std::array<int, 6> dice_type_counts = CountDiceTypes();
     int dice_total = 0;
-    for (int i = 0; i < kNumCategories; i++) { // Ones through Sixes
-        category_values_[i] = dice_type_counts[i+1] * i+1;
+    for (int i = 0; i < 6; i++) { // Ones through Sixes
+        category_values_[i] = dice_type_counts[i] * (i+1);
         dice_total += category_values_[i];
     }
 
@@ -80,24 +83,26 @@ void Engine::CalculateCategoryValues() {
     category_values_[12] = dice_total; // Chance
 }
 
-std::map<int, int> Engine::CountDiceTypes() {
-    std::map<int, int> dice_type_counts;
-    for (Die d: dice_) {
-        dice_type_counts[d.value]++;
+std::array<int, 6> Engine::CountDiceTypes() {
+    std::array<int, 6> dice_type_counts;
+    dice_type_counts.fill(0);
+    for (int i = 0; i < kNumDice; i++) {
+        int val = dice_[i].value;
+        dice_type_counts[val - 1]++;
     }
     return dice_type_counts;
 }
 
-bool Engine::HasThreeOfAKind(std::map<int, int> dice_type_counts) {
-    return dice_type_counts.find(3) != dice_type_counts.end() || HasFourOfAKind(dice_type_counts);
+bool Engine::HasThreeOfAKind(std::array<int, 6> counts) {
+    return *(std::max_element(counts.begin(), counts.end())) >= 3;
 }
 
-bool Engine::HasFourOfAKind(std::map<int, int> dice_type_counts) {
-    return dice_type_counts.find(4) != dice_type_counts.end() || HasYahtzee(dice_type_counts);
+bool Engine::HasFourOfAKind(std::array<int, 6> counts) {
+    return *(std::max_element(counts.begin(), counts.end())) >= 4;
 }
 
-bool Engine::HasYahtzee(std::map<int, int> dice_type_counts) {
-    return dice_type_counts.find(5) != dice_type_counts.end();
+bool Engine::HasYahtzee(std::array<int, 6> counts) {
+    return *(std::max_element(counts.begin(), counts.end())) == 5;
 }
 
 // int Engine::CalculateTotalDiceValue() {
