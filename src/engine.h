@@ -9,7 +9,13 @@ namespace yahtzee {
 const int kNumDice = 5;
 const int kNumCategories = 13;
 const int kUpperSectionBonusThreshold = 63;
-const std::array<std::string, 13> kCategoryNames =
+const int UpperSectionBonusValue = 35;
+const int kFullHouseValue = 25;
+const int kSmallStraightValue = 30;
+const int kLargeStraightValue = 40;
+const int kYahtzeeValue = 50;
+const int kYahtzeeBonusValue = 100;
+const std::array<std::string, kNumCategories> kCategoryNames =
     {
         "Ones",
         "Twos",
@@ -34,6 +40,7 @@ class Engine {
         void RollDice();
         void ToggleKeepFlag(int index);
         std::array<int, kNumDice> GetDiceValues();
+        std::array<int, kNumCategories> GetCategoryValues();
     private:
         struct Die {
             Die();
@@ -42,11 +49,18 @@ class Engine {
             bool keep;
         };
 
+        void CalculateCategoryValues();
+        std::map<int, int> CountDiceTypes();
+        bool HasThreeOfAKind(std::map<int, int> dice_type_counts);
+        bool HasFourOfAKind(std::map<int, int> dice_type_counts);
+        bool HasYahtzee(std::map<int, int> dice_type_counts);
+        //int CalculateTotalDiceValue();
+
         int score_;
         int upper_section_score_;
         bool yahtzee_bonus_enabled_;
         std::array<Die, kNumDice> dice_;
-        std::map<std::string, int> category_values_;
+        std::array<int, kNumCategories> category_values_;
 };
 
 }

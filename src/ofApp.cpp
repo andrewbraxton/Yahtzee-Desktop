@@ -62,10 +62,14 @@ void ofApp::draw() {
 
 void ofApp::rollButtonPressed() {
   engine.RollDice();
-  std::array<int, kNumDice> values = engine.GetDiceValues();
+  std::array<int, kNumDice> dice_values = engine.GetDiceValues();
   for (int i = 0; i < kNumDice; i++) {
-    dice[i].load(GetImagePath(values[i]));
+    dice[i].load(GetImagePath(dice_values[i]));
     dice[i].resize(kDieSize, kDieSize);
+  }
+  std::array<int, kNumCategories> cat_values = engine.GetCategoryValues();
+  for (int i = 0; i < kNumCategories; i++) {
+    category_values[i] = std::to_string(cat_values[i]);
   }
 }
 
