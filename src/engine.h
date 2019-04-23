@@ -51,9 +51,13 @@ class Engine {
 
         void CalculateCategoryValues();
         std::array<int, kMaxDieValue> CountDiceTypes();
+        
         bool HasThreeOfAKind(std::array<int, kMaxDieValue> dice_type_counts);
         bool HasFourOfAKind(std::array<int, kMaxDieValue> dice_type_counts);
         bool HasFullHouse(std::array<int, kMaxDieValue> dice_type_counts);
+        int CalculateLongestStraight(std::array<int, kMaxDieValue> dice_type_counts);
+        bool HasSmallStraight(std::array<int, kMaxDieValue> dice_type_counts);
+        bool HasLargeStraight(std::array<int, kMaxDieValue> dice_type_counts);
         bool HasYahtzee(std::array<int, kMaxDieValue> dice_type_counts);
 
         int score_;

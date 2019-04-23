@@ -60,7 +60,7 @@ void Engine::CalculateCategoryValues() {
         category_values_[6] = dice_total;
     }
     
-    if(HasFourOfAKind(dice_type_counts)) {
+    if (HasFourOfAKind(dice_type_counts)) {
         category_values_[7] = dice_total;
     }
 
@@ -68,15 +68,15 @@ void Engine::CalculateCategoryValues() {
         category_values_[8] = kFullHouseValue;
     }
 
-    // if (HasSmallStraight(dice_type_counts)) {
-    //     category_values_[9] = kSmallStraightValue;
-    // }
+    if (HasSmallStraight(dice_type_counts)) {
+        category_values_[9] = kSmallStraightValue;
+    }
 
-    // if (HasLargeStraight(dice_type_counts)) {
-    //     category_values_[10] = kLargeStraightValue;
-    // }
+    if (HasLargeStraight(dice_type_counts)) {
+        category_values_[10] = kLargeStraightValue;
+    }
 
-    if(HasYahtzee(dice_type_counts)) {
+    if (HasYahtzee(dice_type_counts)) {
         category_values_[11] = kYahtzeeValue;
     }
 
@@ -99,11 +99,33 @@ bool Engine::HasThreeOfAKind(std::array<int, kMaxDieValue> counts) {
 
 bool Engine::HasFourOfAKind(std::array<int, kMaxDieValue> counts) {
     return std::any_of(counts.begin(), counts.end(), [](int i){return i>=4;});
-    //return *(std::max_element(counts.begin(), counts.end())) >= 4;
 }
 
 bool Engine::HasFullHouse(std::array<int, kMaxDieValue> counts) {
     return HasThreeOfAKind(counts) && std::any_of(counts.begin(), counts.end(), [](int i){return i==2;});
+}
+
+int Engine::CalculateLongestStraight(std::array<int, kMaxDieValue> counts) {
+    int longest = 0;
+    int temp = 0;
+    for (int count: counts) {
+        if (count > 0) {
+            temp++;
+            if (temp > longest) {
+                longest = temp;
+            }
+        } else {
+            temp = 0;
+        }
+    }
+    return longest;
+}
+bool Engine::HasSmallStraight(std::array<int, kMaxDieValue> counts) {
+    return CalculateLongestStraight(counts) >= 4;
+}
+
+bool Engine::HasLargeStraight(std::array<int, kMaxDieValue> counts) {
+    return CalculateLongestStraight(counts) == 5;
 }
 
 bool Engine::HasYahtzee(std::array<int, kMaxDieValue> counts) {
