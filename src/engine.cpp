@@ -49,9 +49,9 @@ void Engine::Die::Roll() {
 
 void Engine::CalculateCategoryValues() {
     category_values_.fill(0);
-    std::array<int, 6> dice_type_counts = CountDiceTypes();
+    std::array<int, kMaxDieValue> dice_type_counts = CountDiceTypes();
     int dice_total = 0;
-    for (int i = 0; i < 6; i++) { // Ones through Sixes
+    for (int i = 0; i < kMaxDieValue; i++) { // Ones through Sixes
         category_values_[i] = dice_type_counts[i] * (i+1);
         dice_total += category_values_[i];
     }
@@ -64,9 +64,9 @@ void Engine::CalculateCategoryValues() {
         category_values_[7] = dice_total;
     }
 
-    // if (HasFullHouse(dice_type_counts)) {
-    //     category_values_[8] = kFullHouseValue;
-    // }
+    if (HasFullHouse(dice_type_counts)) {
+        category_values_[8] = kFullHouseValue;
+    }
 
     // if (HasSmallStraight(dice_type_counts)) {
     //     category_values_[9] = kSmallStraightValue;
@@ -83,8 +83,8 @@ void Engine::CalculateCategoryValues() {
     category_values_[12] = dice_total; // Chance
 }
 
-std::array<int, 6> Engine::CountDiceTypes() {
-    std::array<int, 6> dice_type_counts;
+std::array<int, kMaxDieValue> Engine::CountDiceTypes() {
+    std::array<int, kMaxDieValue> dice_type_counts;
     dice_type_counts.fill(0);
     for (int i = 0; i < kNumDice; i++) {
         int val = dice_[i].value;
@@ -93,22 +93,19 @@ std::array<int, 6> Engine::CountDiceTypes() {
     return dice_type_counts;
 }
 
-bool Engine::HasThreeOfAKind(std::array<int, 6> counts) {
-    return *(std::max_element(counts.begin(), counts.end())) >= 3;
+bool Engine::HasThreeOfAKind(std::array<int, kMaxDieValue> counts) {
+    return std::any_of(counts.begin(), counts.end(), [](int i){return i>=3;});
 }
 
-bool Engine::HasFourOfAKind(std::array<int, 6> counts) {
-    return *(std::max_element(counts.begin(), counts.end())) >= 4;
+bool Engine::HasFourOfAKind(std::array<int, kMaxDieValue> counts) {
+    return std::any_of(counts.begin(), counts.end(), [](int i){return i>=4;});
+    //return *(std::max_element(counts.begin(), counts.end())) >= 4;
 }
 
-bool Engine::HasYahtzee(std::array<int, 6> counts) {
-    return *(std::max_element(counts.begin(), counts.end())) == 5;
+bool Engine::HasFullHouse(std::array<int, kMaxDieValue> counts) {
+    return HasThreeOfAKind(counts) && std::any_of(counts.begin(), counts.end(), [](int i){return i==2;});
 }
 
-// int Engine::CalculateTotalDiceValue() {
-//     int total = 0;
-//     for (Die d: dice_) {
-//         total += dice_.value;
-//     }
-//     return total;
-// }
+bool Engine::HasYahtzee(std::array<int, kMaxDieValue> counts) {
+    return std::any_of(counts.begin(), counts.end(), [](int i){return i==5;});
+}

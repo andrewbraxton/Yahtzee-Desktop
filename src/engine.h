@@ -5,6 +5,7 @@
 
 namespace yahtzee {
 
+const int kMaxDieValue = 6;
 const int kNumDice = 5;
 const int kNumCategories = 13;
 const int kUpperSectionBonusThreshold = 63;
@@ -49,11 +50,11 @@ class Engine {
         };
 
         void CalculateCategoryValues();
-        std::array<int, 6> CountDiceTypes();
-        bool HasThreeOfAKind(std::array<int, 6> dice_type_counts);
-        bool HasFourOfAKind(std::array<int, 6> dice_type_counts);
-        bool HasYahtzee(std::array<int, 6> dice_type_counts);
-        //int CalculateTotalDiceValue();
+        std::array<int, kMaxDieValue> CountDiceTypes();
+        bool HasThreeOfAKind(std::array<int, kMaxDieValue> dice_type_counts);
+        bool HasFourOfAKind(std::array<int, kMaxDieValue> dice_type_counts);
+        bool HasFullHouse(std::array<int, kMaxDieValue> dice_type_counts);
+        bool HasYahtzee(std::array<int, kMaxDieValue> dice_type_counts);
 
         int score_;
         int upper_section_score_;
