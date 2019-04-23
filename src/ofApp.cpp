@@ -5,21 +5,20 @@ using namespace yahtzee;
 void ofApp::setup() {
   for (int i = 0; i < score_categories.size(); i++) {
     score_categories[i].setup(kCategoryNames[i], false, kCategorySizeX, kCategorySizeY);
+    score_categories[i].addListener(this, &ofApp::categoryPressed);
   }
-
-  for (int i = 0; i < kNumDice; i++) {
-    dice[i].load(GetImagePath(i + 1));
-    dice[i].resize(kDieSize, kDieSize);
-
-    std::string keep_label = "Keep [" + std::to_string(i+1) + "]";
-    keeps[i].setup(keep_label, false, kKeepSizeX, kKeepSizeY);
-    keeps[i].addListener(this, &ofApp::keepTogglePressed);
-  }
-
   bonus.setup("Bonus", "0/63", kCategorySizeX, kCategorySizeY);
   roll.setup("Roll [SPACE] (0/3)", kRollSizeX, kRollSizeY);
   roll.addListener(this, &ofApp::rollButtonPressed);
   score.setup("Score", "0", kScoreSizeX, kScoreSizeY);
+  for (int i = 0; i < kNumDice; i++) {
+    std::string keep_label = "Keep [" + std::to_string(i+1) + "]";
+    keeps[i].setup(keep_label, false, kKeepSizeX, kKeepSizeY);
+    keeps[i].addListener(this, &ofApp::keepTogglePressed);
+
+    dice[i].load(GetImagePath(i + 1));
+    dice[i].resize(kDieSize, kDieSize);
+  }
 
   roll_sound.load("/sounds/diceroll.mp3");
 }
@@ -62,9 +61,21 @@ void ofApp::rollButtonPressed() {
   }
 }
 
+void ofApp::categoryPressed(const void* sender, bool& toggle_on) {
+  if (!toggle_on) {
+    return;
+  }
+  ofParameter<bool>* pressed = (ofParameter<bool>*)sender;
+  for (auto& category: score_categories) {
+    if (category.getName() != pressed->getName()) {
+      category = false;
+    }
+  }
+}
+
 void ofApp::keepTogglePressed(const void* sender, bool& toggle_on) {
-  ofParameter<bool>* toggle = (ofParameter<bool>*)sender;
-  int label_num = toggle->getName()[6] - 48; // ASCII to int conversion
+  ofParameter<bool>* pressed = (ofParameter<bool>*)sender;
+  int label_num = pressed->getName()[6] - 48; // ASCII to int conversion
   engine.ToggleKeepFlag(label_num - 1); // since the labels are 1-5
 }
 

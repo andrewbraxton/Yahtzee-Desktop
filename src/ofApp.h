@@ -43,18 +43,19 @@ class ofApp : public ofBaseApp {
 
   void keyPressed(int key);
   void rollButtonPressed();
+  void categoryPressed(const void* sender, bool& toggle_on);
   void keepTogglePressed(const void* sender, bool& toggle_on);
 
   yahtzee::Engine engine;
 
-  // GUI elements
-  std::array<ofImage, yahtzee::kNumDice> dice;
-  std::array<ofxToggle, yahtzee::kNumDice> keeps;
+  // GUI elements, top to bottom
+  std::array<ofxToggle, yahtzee::kNumCategories> score_categories;
   ofxLabel bonus;
   ofxButton roll;
   ofxLabel score;
-  std::array<ofxToggle, yahtzee::kNumCategories> score_categories;
-
+  std::array<ofxToggle, yahtzee::kNumDice> keeps;
+  std::array<ofImage, yahtzee::kNumDice> dice;
+  
   // Sound effects
   ofSoundPlayer roll_sound;
 
