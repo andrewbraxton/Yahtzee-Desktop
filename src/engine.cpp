@@ -18,10 +18,8 @@ void Engine::RollDice() {
     }
 }
 
-void Engine::UpdateKeepInfo(std::vector<bool> keep_info) {
-    for (int i = 0; i < dice_.size(); i++) {
-        dice_[i].keep = keep_info[i];
-    }
+void Engine::ToggleKeepFlag(int index) {
+    dice_[index].keep = !dice_[index].keep;
 }
 
 std::array<int, kNumDice> Engine::GetDiceValues() {

@@ -62,16 +62,10 @@ void ofApp::rollButtonPressed() {
   }
 }
 
-void ofApp::keepTogglePressed(bool& toggle_on) {
-  std::vector<bool> keep_info;
-  for (auto toggle: keeps) {
-    if (toggle) {
-      keep_info.push_back(true);
-    } else {
-      keep_info.push_back(false);
-    }
-  }
-  engine.UpdateKeepInfo(keep_info);
+void ofApp::keepTogglePressed(const void* sender, bool& toggle_on) {
+  ofParameter<bool>* toggle = (ofParameter<bool>*)sender;
+  int label_num = toggle->getName()[6] - 48; // ASCII to int conversion
+  engine.ToggleKeepFlag(label_num - 1); // since the labels are 1-5
 }
 
 void ofApp::keyPressed(int key) {}

@@ -43,7 +43,7 @@ class ofApp : public ofBaseApp {
 
   void keyPressed(int key);
   void rollButtonPressed();
-  void keepTogglePressed(bool& toggle_on);
+  void keepTogglePressed(const void* sender, bool& toggle_on);
 
   yahtzee::Engine engine;
 

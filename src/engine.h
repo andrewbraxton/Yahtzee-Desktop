@@ -15,7 +15,7 @@ class Engine {
         Engine();
 
         void RollDice();
-        void UpdateKeepInfo(std::vector<bool> keep_info);
+        void ToggleKeepFlag(int index);
         std::array<int, kNumDice> GetDiceValues();
     private:
         struct Die {
