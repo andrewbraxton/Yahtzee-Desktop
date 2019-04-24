@@ -8,6 +8,7 @@ using namespace yahtzee;
 
 Engine::Engine() {
     state_ = PRE_GAME;
+    roll_number_ = 0;
     score_ = 0;
     upper_section_score_ = 0;
     upper_section_bonus_earned_ = false;
@@ -17,6 +18,7 @@ Engine::Engine() {
 
 void Engine::RollDice() {
     state_ = MID_GAME;
+    roll_number_++;
 
     for (Die& die: dice_) {
         if (!die.keep) {
@@ -26,12 +28,16 @@ void Engine::RollDice() {
     CalculateCategoryValues();
 }
 
-void Engine::ToggleKeepFlag(int index) {
-    dice_[index].keep = !dice_[index].keep;
+void Engine::UpdateKeepFlag(int index, bool keep) {
+    dice_[index].keep = keep;
 }
 
 GameStates Engine::GetGameState() {
     return state_;
+}
+
+int Engine::GetRollNumber() {
+    return roll_number_;
 }
 
 int Engine::GetScore() {
@@ -51,6 +57,8 @@ std::array<int, kNumDice> Engine::GetDiceValues() {
 }
 
 void Engine::AddCategoryValueToScore(int index) {
+    roll_number_ = 0;
+
     int value = category_values_[index];
     score_ += value;
     if (index < 6) {

@@ -44,10 +44,11 @@ class Engine {
         Engine();
 
         void RollDice();
-        void ToggleKeepFlag(int index);
+        void UpdateKeepFlag(int index, bool keep);
         void AddCategoryValueToScore(int index);
 
         GameStates GetGameState();
+        int GetRollNumber();
         int GetScore();
         int GetUpperSectionScore();
         std::array<int, kNumDice> GetDiceValues();
@@ -73,6 +74,7 @@ class Engine {
         bool HasYahtzee(std::array<int, kMaxDieValue> dice_type_counts);
 
         GameStates state_;
+        int roll_number_;
         int score_;
         int upper_section_score_;
         bool upper_section_bonus_earned_;
