@@ -42,6 +42,7 @@ class Engine {
         void AddCategoryValueToScore(int index);
 
         int GetScore();
+        int GetUpperSectionScore();
         std::array<int, kNumDice> GetDiceValues();
         std::array<int, kNumCategories> GetCategoryValues();
     private:
@@ -65,6 +66,7 @@ class Engine {
 
         int score_;
         int upper_section_score_;
+        bool upper_section_bonus_earned_;
         bool yahtzee_bonus_enabled_;
         std::array<Die, kNumDice> dice_;
         std::array<int, kNumCategories> category_values_;

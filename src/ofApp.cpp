@@ -30,6 +30,13 @@ void ofApp::setup() {
 }
 
 void ofApp::update() {
+  int upper_section_score = engine.GetUpperSectionScore();
+  if (upper_section_score >= kUpperSectionBonusThreshold) {
+    bonus = "Earned";
+  } else {
+    bonus = std::to_string(engine.GetUpperSectionScore()) + "/63";
+  }
+
   score = std::to_string(engine.GetScore());
 }
 
@@ -89,19 +96,14 @@ void ofApp::rollButtonPressed() {
 
 void ofApp::categoryPressed(const void* sender, bool& toggle_on) {
   // disable all category toggles until next roll
+  // and send the index of the selected category to the engine
   ofParameter<bool>* pressed = (ofParameter<bool>*)sender;
-  // for (auto& category: category_toggles) {
-  //   category.unregisterMouseEvents();
-  // }
-  int index;
   for (int i = 0; i < kNumCategories; i++) {
     category_toggles[i].unregisterMouseEvents();
     if (category_toggles[i].getName() == pressed->getName()) {
-      index = i;
+      engine.AddCategoryValueToScore(i);
     }
   }
-
-  engine.AddCategoryValueToScore(index);
 }
 
 void ofApp::keepTogglePressed(const void* sender, bool& toggle_on) {

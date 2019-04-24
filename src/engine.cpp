@@ -9,6 +9,7 @@ using namespace yahtzee;
 Engine::Engine() {
     score_ = 0;
     upper_section_score_ = 0;
+    upper_section_bonus_earned_ = false;
     yahtzee_bonus_enabled_ = false;
     category_values_.fill(0);
 }
@@ -30,6 +31,10 @@ int Engine::GetScore() {
     return score_;
 }
 
+int Engine::GetUpperSectionScore() {
+    return upper_section_score_;
+}
+
 std::array<int, kNumDice> Engine::GetDiceValues() {
     std::array<int, kNumDice> values;
     for (int i = 0; i < kNumDice; i++) {
@@ -43,6 +48,10 @@ void Engine::AddCategoryValueToScore(int index) {
     score_ += value;
     if (index < 6) {
         upper_section_score_ += value;
+    }
+    if (!upper_section_bonus_earned_ && upper_section_score_ >= kUpperSectionBonusThreshold) {
+        score_ += kUpperSectionBonusValue;
+        upper_section_bonus_earned_ = true;
     }
 }
 
