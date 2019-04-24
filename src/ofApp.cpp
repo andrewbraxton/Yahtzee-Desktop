@@ -22,6 +22,7 @@ void ofApp::setup() {
     keeps[i].addListener(this, &ofApp::keepTogglePressed);
 
     dice[i].load(GetImagePath(i + 1));
+    dice[i].resize(kDieSize, kDieSize);
   }
 
   roll_sound.load("/sounds/diceroll.mp3");
@@ -73,12 +74,15 @@ void ofApp::rollButtonPressed() {
   std::array<int, kNumDice> dice_values = engine.GetDiceValues();
   for (int i = 0; i < kNumDice; i++) {
     dice[i].load(GetImagePath(dice_values[i]));
+    dice[i].resize(kDieSize, kDieSize);
   }
   
-  // updating category value labels
+  // updating category value labels for non-selected categories
   std::array<int, kNumCategories> cat_values = engine.GetCategoryValues();
   for (int i = 0; i < kNumCategories; i++) {
-    category_values[i] = std::to_string(cat_values[i]);
+    if (!category_toggles[i]) {
+      category_values[i] = std::to_string(cat_values[i]);
+    }
   }
 
   // re-enabling all non-selected category toggles

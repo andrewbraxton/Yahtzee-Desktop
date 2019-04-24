@@ -8,7 +8,7 @@
 class ofApp : public ofBaseApp {
  public:
 
-  static const int kWindowSize = 1500;
+  static const int kWindowSize = 1600;
   const float kDieSize = 0.20 * kWindowSize;
   const float kKeepSizeX = kDieSize;
   const float kKeepSizeY = 0.05 * kWindowSize;
