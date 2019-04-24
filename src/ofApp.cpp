@@ -98,6 +98,9 @@ void ofApp::rollButtonPressed() {
 
   std::string roll_number = std::to_string(engine.GetRollNumber());
   if (roll_number == "3") {
+    for (auto& toggle: keeps) {
+      toggle.unregisterMouseEvents();
+    }
     roll.unregisterMouseEvents();
   }
   roll.setName("Roll [SPACE] (" + roll_number + "/3)");
@@ -116,6 +119,12 @@ void ofApp::categoryPressed(const void* sender, bool& toggle_on) {
     }
   }
 
+  for (int i = 0; i < kNumDice; i++) {
+    keeps[i] = false;
+    keeps[i].unregisterMouseEvents();
+  }
+
+  roll.registerMouseEvents();
   roll.setName("Roll [SPACE] (0/3)");
 }
 
@@ -127,11 +136,12 @@ void ofApp::keepTogglePressed(const void* sender, bool& toggle_on) {
 
 void ofApp::keyPressed(int key) {
   GameStates state = engine.GetGameState();
-  if(state == END_GAME) {
+  int roll_number = engine.GetRollNumber();
+  if(state == END_GAME || roll_number == 3) {
     return;
-  } else if (engine.GetRollNumber() != 3 && key == ' ') {
+  } else if (key == ' ') {
     rollButtonPressed();
-  } else if (state == MID_GAME && key >= '1' && key <= '5') {
+  } else if (state == MID_GAME && roll_number != 0 && key >= '1' && key <= '5') {
     keeps[key-48-1] = !keeps[key-48-1]; // ASCII to int conversion, -1 for index
   }
 }
