@@ -9,7 +9,6 @@ void ofApp::setup() {
     category_toggles[i].setup(kCategoryNames[i], false, kCategorySizeX, kCategorySizeY);
     category_toggles[i].addListener(this, &ofApp::categoryPressed);
     category_values[i].setup("", "0", kCategoryValueSize, kCategoryValueSize);
-    category_values[i].setDefaultTextPadding(0);
   }
 
   bonus.setup("Bonus", "0/63", kCategorySizeX, kCategorySizeY);
@@ -23,7 +22,6 @@ void ofApp::setup() {
     keeps[i].addListener(this, &ofApp::keepTogglePressed);
 
     dice[i].load(GetImagePath(i + 1));
-    dice[i].resize(kDieSize, kDieSize);
   }
 
   roll_sound.load("/sounds/diceroll.mp3");
@@ -75,7 +73,6 @@ void ofApp::rollButtonPressed() {
   std::array<int, kNumDice> dice_values = engine.GetDiceValues();
   for (int i = 0; i < kNumDice; i++) {
     dice[i].load(GetImagePath(dice_values[i]));
-    dice[i].resize(kDieSize, kDieSize);
   }
   
   // updating category value labels

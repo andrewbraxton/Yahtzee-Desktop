@@ -45,6 +45,7 @@ class Engine {
         int GetUpperSectionScore();
         std::array<int, kNumDice> GetDiceValues();
         std::array<int, kNumCategories> GetCategoryValues();
+    
     private:
         struct Die {
             Die();

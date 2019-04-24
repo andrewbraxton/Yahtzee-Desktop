@@ -141,6 +141,7 @@ int Engine::CalculateLongestStraight(std::array<int, kMaxDieValue> counts) {
     }
     return longest;
 }
+
 bool Engine::HasSmallStraight(std::array<int, kMaxDieValue> counts) {
     return CalculateLongestStraight(counts) >= 4;
 }
