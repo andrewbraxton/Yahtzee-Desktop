@@ -32,6 +32,12 @@ const std::array<std::string, kNumCategories> kCategoryNames =
         "Chance"
     };
 
+enum GameStates {
+    PRE_GAME,
+    MID_GAME,
+    END_GAME
+};
+
 class Engine {
 
     public:
@@ -41,6 +47,7 @@ class Engine {
         void ToggleKeepFlag(int index);
         void AddCategoryValueToScore(int index);
 
+        GameStates GetGameState();
         int GetScore();
         int GetUpperSectionScore();
         std::array<int, kNumDice> GetDiceValues();
@@ -65,6 +72,7 @@ class Engine {
         bool HasLargeStraight(std::array<int, kMaxDieValue> dice_type_counts);
         bool HasYahtzee(std::array<int, kMaxDieValue> dice_type_counts);
 
+        GameStates state_;
         int score_;
         int upper_section_score_;
         bool upper_section_bonus_earned_;

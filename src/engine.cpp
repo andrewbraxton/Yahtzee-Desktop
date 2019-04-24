@@ -7,6 +7,7 @@
 using namespace yahtzee;
 
 Engine::Engine() {
+    state_ = PRE_GAME;
     score_ = 0;
     upper_section_score_ = 0;
     upper_section_bonus_earned_ = false;
@@ -15,6 +16,8 @@ Engine::Engine() {
 }
 
 void Engine::RollDice() {
+    state_ = MID_GAME;
+
     for (Die& die: dice_) {
         if (!die.keep) {
             die.Roll();
@@ -25,6 +28,10 @@ void Engine::RollDice() {
 
 void Engine::ToggleKeepFlag(int index) {
     dice_[index].keep = !dice_[index].keep;
+}
+
+GameStates Engine::GetGameState() {
+    return state_;
 }
 
 int Engine::GetScore() {

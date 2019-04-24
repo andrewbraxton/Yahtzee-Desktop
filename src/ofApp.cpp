@@ -8,6 +8,7 @@ void ofApp::setup() {
   for (int i = 0; i < category_toggles.size(); i++) {
     category_toggles[i].setup(kCategoryNames[i], false, kCategorySizeX, kCategorySizeY);
     category_toggles[i].addListener(this, &ofApp::categoryPressed);
+    category_toggles[i].unregisterMouseEvents();
     category_values[i].setup("", "0", kCategoryValueSize, kCategoryValueSize);
   }
 
@@ -20,6 +21,7 @@ void ofApp::setup() {
     std::string keep_label = "Keep [" + std::to_string(i+1) + "]";
     keeps[i].setup(keep_label, false, kKeepSizeX, kKeepSizeY);
     keeps[i].addListener(this, &ofApp::keepTogglePressed);
+    keeps[i].unregisterMouseEvents();
 
     dice[i].load(GetImagePath(i + 1));
     dice[i].resize(kDieSize, kDieSize);
@@ -70,11 +72,13 @@ void ofApp::draw() {
 void ofApp::rollButtonPressed() {
   engine.RollDice();
   
-  // updating dice images
+  // updating dice images and enabling keep toggles
   std::array<int, kNumDice> dice_values = engine.GetDiceValues();
   for (int i = 0; i < kNumDice; i++) {
     dice[i].load(GetImagePath(dice_values[i]));
     dice[i].resize(kDieSize, kDieSize);
+
+    keeps[i].registerMouseEvents();
   }
   
   // updating category value labels for non-selected categories
@@ -114,9 +118,12 @@ void ofApp::keepTogglePressed(const void* sender, bool& toggle_on) {
 }
 
 void ofApp::keyPressed(int key) {
-  if (key == ' ') {
+  GameStates state = engine.GetGameState();
+  if(state == END_GAME) {
+    return;
+  } else if (key == ' ') {
     rollButtonPressed();
-  } else if (key >= '1' && key <= '5'){
+  } else if (state == MID_GAME && key >= '1' && key <= '5') {
     keeps[key-48-1] = !keeps[key-48-1]; // ASCII to int conversion, -1 for index
   }
 }
