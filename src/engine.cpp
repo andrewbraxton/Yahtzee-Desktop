@@ -26,12 +26,24 @@ void Engine::ToggleKeepFlag(int index) {
     dice_[index].keep = !dice_[index].keep;
 }
 
+int Engine::GetScore() {
+    return score_;
+}
+
 std::array<int, kNumDice> Engine::GetDiceValues() {
     std::array<int, kNumDice> values;
     for (int i = 0; i < kNumDice; i++) {
         values[i] = dice_[i].value;
     }
     return values;
+}
+
+void Engine::AddCategoryValueToScore(int index) {
+    int value = category_values_[index];
+    score_ += value;
+    if (index < 6) {
+        upper_section_score_ += value;
+    }
 }
 
 std::array<int, kNumCategories> Engine::GetCategoryValues() {

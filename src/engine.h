@@ -9,7 +9,7 @@ const int kMaxDieValue = 6;
 const int kNumDice = 5;
 const int kNumCategories = 13;
 const int kUpperSectionBonusThreshold = 63;
-const int UpperSectionBonusValue = 35;
+const int kUpperSectionBonusValue = 35;
 const int kFullHouseValue = 25;
 const int kSmallStraightValue = 30;
 const int kLargeStraightValue = 40;
@@ -39,6 +39,9 @@ class Engine {
 
         void RollDice();
         void ToggleKeepFlag(int index);
+        void AddCategoryValueToScore(int index);
+
+        int GetScore();
         std::array<int, kNumDice> GetDiceValues();
         std::array<int, kNumCategories> GetCategoryValues();
     private:

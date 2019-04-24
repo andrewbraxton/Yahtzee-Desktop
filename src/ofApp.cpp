@@ -11,10 +11,12 @@ void ofApp::setup() {
     category_values[i].setup("", "0", kCategoryValueSize, kCategoryValueSize);
     category_values[i].setDefaultTextPadding(0);
   }
+
   bonus.setup("Bonus", "0/63", kCategorySizeX, kCategorySizeY);
   roll.setup("Roll [SPACE] (0/3)", kRollSizeX, kRollSizeY);
   roll.addListener(this, &ofApp::rollButtonPressed);
   score.setup("Score", "0", kScoreSizeX, kScoreSizeY);
+
   for (int i = 0; i < kNumDice; i++) {
     std::string keep_label = "Keep [" + std::to_string(i+1) + "]";
     keeps[i].setup(keep_label, false, kKeepSizeX, kKeepSizeY);
@@ -27,7 +29,9 @@ void ofApp::setup() {
   roll_sound.load("/sounds/diceroll.mp3");
 }
 
-void ofApp::update() {}
+void ofApp::update() {
+  score = std::to_string(engine.GetScore());
+}
 
 void ofApp::draw() {
   // drawing from top down
@@ -40,7 +44,6 @@ void ofApp::draw() {
       category_values[i].setPosition(2*kCategorySizeX - kCategoryValueSize, kCategoryValueSize*(i-6));
     }
     category_toggles[i].draw();
-    
     category_values[i].draw();
   }
   bonus.setPosition(0, kCategorySizeY * 6);
@@ -61,28 +64,44 @@ void ofApp::draw() {
 void ofApp::rollButtonPressed() {
   engine.RollDice();
   
+  // updating dice images
   std::array<int, kNumDice> dice_values = engine.GetDiceValues();
   for (int i = 0; i < kNumDice; i++) {
     dice[i].load(GetImagePath(dice_values[i]));
     dice[i].resize(kDieSize, kDieSize);
   }
   
+  // updating category value labels
   std::array<int, kNumCategories> cat_values = engine.GetCategoryValues();
   for (int i = 0; i < kNumCategories; i++) {
     category_values[i] = std::to_string(cat_values[i]);
   }
+
+  // re-enabling all non-selected category toggles
+  for (ofxToggle& category: category_toggles) {
+    if (!category) {
+      category.registerMouseEvents();
+    }
+  }
+
+  roll_sound.play();
 }
 
 void ofApp::categoryPressed(const void* sender, bool& toggle_on) {
-  if (!toggle_on) {
-    return;
-  }
+  // disable all category toggles until next roll
   ofParameter<bool>* pressed = (ofParameter<bool>*)sender;
-  for (auto& category: category_toggles) {
-    if (category.getName() != pressed->getName()) {
-      category = false;
+  // for (auto& category: category_toggles) {
+  //   category.unregisterMouseEvents();
+  // }
+  int index;
+  for (int i = 0; i < kNumCategories; i++) {
+    category_toggles[i].unregisterMouseEvents();
+    if (category_toggles[i].getName() == pressed->getName()) {
+      index = i;
     }
   }
+
+  engine.AddCategoryValueToScore(index);
 }
 
 void ofApp::keepTogglePressed(const void* sender, bool& toggle_on) {
