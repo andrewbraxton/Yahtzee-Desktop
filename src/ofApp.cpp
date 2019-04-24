@@ -112,7 +112,13 @@ void ofApp::keepTogglePressed(const void* sender, bool& toggle_on) {
   engine.ToggleKeepFlag(label_num - 1); // since the labels are 1-5
 }
 
-void ofApp::keyPressed(int key) {}
+void ofApp::keyPressed(int key) {
+  if (key == ' ') {
+    rollButtonPressed();
+  } else if (key >= '1' && key <= '5'){
+    keeps[key-48-1] = !keeps[key-48-1]; // ASCII to int conversion, -1 for index
+  }
+}
 
 std::string ofApp::GetImagePath(int value) {
   std::string path = "images/dice.png";
