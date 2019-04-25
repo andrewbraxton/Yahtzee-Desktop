@@ -30,7 +30,20 @@ void ofApp::setup() {
   roll_sound.load("/sounds/diceroll.mp3");
 }
 
-void ofApp::update() {}
+void ofApp::update() {
+  GameStates state = engine.GetGameState();
+  switch (state) {
+    case PRE_GAME:
+        break;
+    case MID_GAME:
+        break;
+    case END_GAME:
+        roll.unregisterMouseEvents();
+        break;
+    default:
+        assert(false);
+  }
+}
 
 void ofApp::draw() {
   // drawing from top down
@@ -117,8 +130,10 @@ void ofApp::categoryPressed(const void* sender, bool& toggle_on) {
   }
 
   // re-enable and update the name of the roll button
-  roll.registerMouseEvents();
-  roll.setName("Roll [SPACE] (0/3)");
+  //if (engine.GetGameState() != END_GAME) {
+    roll.registerMouseEvents();
+    roll.setName("Roll [SPACE] (0/3)");
+  //}
 
   // update the score and bonus labels
   int upper_section_score = engine.GetUpperSectionScore();

@@ -75,6 +75,7 @@ class Engine {
 
         GameStates state_;
         int roll_number_;
+        int round_number_;
         int score_;
         int upper_section_score_;
         bool upper_section_bonus_earned_;

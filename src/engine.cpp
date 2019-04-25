@@ -8,6 +8,7 @@ using namespace yahtzee;
 
 Engine::Engine() {
     state_ = PRE_GAME;
+    round_number_ = 1;
     roll_number_ = 0;
     score_ = 0;
     upper_section_score_ = 0;
@@ -58,6 +59,11 @@ std::array<int, kNumDice> Engine::GetDiceValues() {
 
 void Engine::AddCategoryValueToScore(int index) {
     roll_number_ = 0;
+    if (round_number_ == kNumCategories) {
+        state_ = END_GAME;
+    } else {
+        round_number_++;
+    }
 
     int value = category_values_[index];
     score_ += value;
