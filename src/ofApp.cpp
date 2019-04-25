@@ -63,7 +63,7 @@ void ofApp::update() {
         std::for_each(category_toggles.begin(), category_toggles.end(), [](auto& i) {i.unregisterMouseEvents();});
         std::for_each(keeps.begin(), keeps.end(), [](auto& i) {i.unregisterMouseEvents();});
         break;
-    // should not reach
+    // should not execute
     default:
         assert(false);
   }
@@ -132,10 +132,8 @@ void ofApp::categoryPressed(const void* sender, bool& toggle_on) {
     }
   }
 
-  // update the name of the roll button
+  // update the roll, score, and bonus elements
   roll.setName("Roll [SPACE] (0/3)");
-
-  // update the score and bonus labels
   int upper_section_score = engine.GetUpperSectionScore();
   if (upper_section_score >= kUpperSectionBonusThreshold) {
     bonus = "Earned";
@@ -152,15 +150,31 @@ void ofApp::keepTogglePressed(const void* sender, bool& toggle_on) {
 }
 
 void ofApp::keyPressed(int key) {
-  // GameStates state = engine.GetGameState();
-  // int roll_number = engine.GetRollNumber();
-  // if(state == END_GAME || roll_number == 3) {
-  //   return;
-  // } else if (key == ' ') {
-  //   rollButtonPressed();
-  // } else if (state == MID_GAME && roll_number != 0 && key >= '1' && key <= '5') {
-  //   keeps[key-48-1] = !keeps[key-48-1]; // ASCII to int conversion, -1 for index
-  // }
+  int index = key - 48 - 1; // ASCII to int conversion, -1 for index
+  switch(engine.GetGameState()) {
+    // only allow rolling
+    case PRE_GAME:
+        if(key == ' ') rollButtonPressed();
+        break;
+    // allow rolling and keeping
+    case MID_ROUND:
+        if (key == ' ') rollButtonPressed();
+        if (key >= '1' && key <= '5') keeps[index] = !keeps[index];
+        break;
+    // don't allow rolling or keeping
+    case END_ROUND:
+        break;
+    // only allow rolling
+    case BETWEEN_ROUNDS:
+        if (key == ' ') rollButtonPressed();
+        break; 
+    // don't allow rolling or keeping
+    case END_GAME:
+        break;
+    // should not execute
+    default:
+        assert(false);
+  }
 }
 
 std::string ofApp::GetImagePath(int value) {
