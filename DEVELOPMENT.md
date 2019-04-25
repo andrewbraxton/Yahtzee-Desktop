@@ -20,5 +20,7 @@
     * Padding factor I added to compensate not working
     * Hitboxes for the scoring categories are wonky
     * Kind of fixed this by turning off window border but now the window will have to be unmovable as well as unresizable
-    
-
+* Began working on the game logic
+    * Actual game logic was surprisingly simple, the difficult parts were figuring out the best data structures to use (good thing this isn't CS 225 yet), working with the arcane STL functions (why can you not call .contains() on a map???), and working out the logic of when GUI elements should enable/disable
+    * Originally had all of my element enabling/disabling in listener functions but realized the logic was becoming difficult to parse and having it scattered everywhere was annoying
+        * Moved all of it to `ofApp::update()` and the code is now much more organized and understandable
