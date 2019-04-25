@@ -18,8 +18,12 @@ Engine::Engine() {
 }
 
 void Engine::RollDice() {
-    state_ = MID_GAME;
     roll_number_++;
+    if (roll_number_ == 3) {
+        state_ = END_ROUND;
+    } else {
+        state_ = MID_ROUND;
+    }
 
     for (Die& die: dice_) {
         if (!die.keep) {
@@ -63,6 +67,7 @@ void Engine::AddCategoryValueToScore(int index) {
         state_ = END_GAME;
     } else {
         round_number_++;
+        state_ = BETWEEN_ROUNDS;
     }
 
     int value = category_values_[index];

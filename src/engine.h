@@ -33,9 +33,11 @@ const std::array<std::string, kNumCategories> kCategoryNames =
     };
 
 enum GameStates {
-    PRE_GAME,
-    MID_GAME,
-    END_GAME
+    PRE_GAME,       // before the first roll of the game
+    MID_ROUND,      // when player is able to roll
+    END_ROUND,      // when player is out of rolls
+    BETWEEN_ROUNDS, // after player picks a category
+    END_GAME        // when all categories are scored
 };
 
 class Engine {
