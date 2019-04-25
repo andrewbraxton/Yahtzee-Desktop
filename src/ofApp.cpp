@@ -30,16 +30,7 @@ void ofApp::setup() {
   roll_sound.load("/sounds/diceroll.mp3");
 }
 
-void ofApp::update() {
-  int upper_section_score = engine.GetUpperSectionScore();
-  if (upper_section_score >= kUpperSectionBonusThreshold) {
-    bonus = "Earned";
-  } else {
-    bonus = std::to_string(engine.GetUpperSectionScore()) + "/63";
-  }
-
-  score = std::to_string(engine.GetScore());
-}
+void ofApp::update() {}
 
 void ofApp::draw() {
   // drawing from top down
@@ -119,13 +110,24 @@ void ofApp::categoryPressed(const void* sender, bool& toggle_on) {
     }
   }
 
+  // toggle off and disable all keep toggles until next roll
   for (int i = 0; i < kNumDice; i++) {
     keeps[i] = false;
     keeps[i].unregisterMouseEvents();
   }
 
+  // re-enable and update the name of the roll button
   roll.registerMouseEvents();
   roll.setName("Roll [SPACE] (0/3)");
+
+  // update the score and bonus labels
+  int upper_section_score = engine.GetUpperSectionScore();
+  if (upper_section_score >= kUpperSectionBonusThreshold) {
+    bonus = "Earned";
+  } else {
+    bonus = std::to_string(engine.GetUpperSectionScore()) + "/63";
+  }
+  score = std::to_string(engine.GetScore());
 }
 
 void ofApp::keepTogglePressed(const void* sender, bool& toggle_on) {
