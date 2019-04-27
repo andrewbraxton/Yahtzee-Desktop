@@ -82,7 +82,9 @@ void Engine::AddCategoryValueToScore(int index) {
     }
 
     if (index == 11) {
-        yahtzee_bonus_enabled_ = true;
+        if (category_values_[index] > 0) {
+            yahtzee_bonus_enabled_ = true;
+        }
         yahtzee_category_filled_ = true;
     }
 }
@@ -97,8 +99,7 @@ Engine::Die::Die() {
 }
 
 void Engine::Die::Roll() {
-    //value = ofRandom(1, 7);
-    value = 5;
+    value = ofRandom(1, 7);
 }
 
 void Engine::CalculateCategoryValues() {
@@ -180,4 +181,8 @@ void Engine::HandleYahtzee(int dice_total) {
         category_values_[10] = kLargeStraightValue;
     }
     category_values_[11] = kYahtzeeValue;
+}
+
+bool Engine::UpperSectionBonusEarned() {
+    return upper_section_bonus_earned_;
 }

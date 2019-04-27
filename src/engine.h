@@ -53,6 +53,7 @@ class Engine {
         int GetRollNumber();
         int GetScore();
         int GetUpperSectionScore();
+        bool UpperSectionBonusEarned();
         std::array<int, kNumDice> GetDiceValues();
         std::array<int, kNumCategories> GetCategoryValues();
     

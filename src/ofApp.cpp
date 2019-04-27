@@ -32,6 +32,26 @@ void ofApp::setup() {
 }
 
 void ofApp::update() {
+  // update the category value labels
+  auto new_values = engine.GetCategoryValues();
+  for (int i = 0; i < kNumCategories; i++) {
+    category_values[i] = std::to_string(new_values[i]);
+  }
+
+  // update the name of the roll button
+  std::string roll_number = std::to_string(engine.GetRollNumber());
+  roll.setName("Roll [SPACE] (" + roll_number + "/3)");
+
+  // update the score and bonus elements
+  score = std::to_string(engine.GetScore());
+  if (engine.UpperSectionBonusEarned()) {
+    bonus = "Earned";
+  } else {
+    int upper_section_score = engine.GetUpperSectionScore();
+    bonus = std::to_string(engine.GetUpperSectionScore()) + "/63";
+  }
+
+  // enable/disable elements as needed
   switch (engine.GetGameState()) {
     // disable everything except roll
     case PRE_GAME:
@@ -100,30 +120,18 @@ void ofApp::draw() {
 void ofApp::rollButtonPressed() {
   engine.RollDice();
   
-  // update the dice images
+  // update the dice images, placed here for performance
   std::array<int, kNumDice> dice_values = engine.GetDiceValues();
   for (int i = 0; i < kNumDice; i++) {
     dice[i].load(GetImagePath(dice_values[i]));
     dice[i].resize(kDieSize, kDieSize);
   }
-  
-  // update the category value labels for non-selected categories
-  std::array<int, kNumCategories> cat_values = engine.GetCategoryValues();
-  for (int i = 0; i < kNumCategories; i++) {
-    if (!category_toggles[i]) {
-      category_values[i] = std::to_string(cat_values[i]);
-    }
-  }
-
-  // update the name of the roll button
-  std::string roll_number = std::to_string(engine.GetRollNumber());
-  roll.setName("Roll [SPACE] (" + roll_number + "/3)");
 
   roll_sound.play();
 }
 
 void ofApp::categoryPressed(const void* sender, bool& toggle_on) {
-  // find and send the index of the selected category to the engine
+  // locate and send the index of the selected category to the engine
   ofParameter<bool>* pressed = (ofParameter<bool>*)sender;
   for (int i = 0; i < kNumCategories; i++) {
     if (category_toggles[i].getName() == pressed->getName()) {
@@ -131,22 +139,12 @@ void ofApp::categoryPressed(const void* sender, bool& toggle_on) {
       break;
     }
   }
-
-  // update the roll, score, and bonus elements
-  roll.setName("Roll [SPACE] (0/3)");
-  int upper_section_score = engine.GetUpperSectionScore();
-  if (upper_section_score >= kUpperSectionBonusThreshold) {
-    bonus = "Earned";
-  } else {
-    bonus = std::to_string(engine.GetUpperSectionScore()) + "/63";
-  }
-  score = std::to_string(engine.GetScore());
 }
 
 void ofApp::keepTogglePressed(const void* sender, bool& toggle_on) {
   ofParameter<bool>* pressed = (ofParameter<bool>*)sender;
   int label_num = pressed->getName()[6] - 48; // ASCII to int conversion
-  engine.UpdateKeepFlag(label_num - 1, toggle_on); // since the labels are 1-5
+  engine.UpdateKeepFlag(label_num - 1, toggle_on); // -1 for index
 }
 
 void ofApp::keyPressed(int key) {
