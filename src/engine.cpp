@@ -14,6 +14,7 @@ Engine::Engine() {
     upper_section_score_ = 0;
     upper_section_bonus_earned_ = false;
     yahtzee_bonus_enabled_ = false;
+    yahtzee_category_filled_ = false;
     category_values_.fill(0);
 }
 
@@ -79,6 +80,11 @@ void Engine::AddCategoryValueToScore(int index) {
         score_ += kUpperSectionBonusValue;
         upper_section_bonus_earned_ = true;
     }
+
+    if (index == 11) {
+        yahtzee_bonus_enabled_ = true;
+        yahtzee_category_filled_ = true;
+    }
 }
 
 std::array<int, kNumCategories> Engine::GetCategoryValues() {
@@ -91,53 +97,36 @@ Engine::Die::Die() {
 }
 
 void Engine::Die::Roll() {
-    value = ofRandom(1, 7);
+    //value = ofRandom(1, 7);
+    value = 5;
 }
 
 void Engine::CalculateCategoryValues() {
     category_values_.fill(0);
-    std::array<int, kMaxDieValue> dice_type_counts = CountDiceTypes();
+    std::array<int, kMaxDieValue> counts = CountDiceTypes();
     int dice_total = 0;
-    for (int i = 0; i < kMaxDieValue; i++) { // Ones through Sixes
-        category_values_[i] = dice_type_counts[i] * (i+1);
+
+    for (int i = 0; i < kMaxDieValue; i++) {
+        category_values_[i] = counts[i] * (i+1); // Ones through Sixes
         dice_total += category_values_[i];
     }
-
-    if (HasThreeOfAKind(dice_type_counts)) {
-        category_values_[6] = dice_total;
-    }
-    
-    if (HasFourOfAKind(dice_type_counts)) {
-        category_values_[7] = dice_total;
-    }
-
-    if (HasFullHouse(dice_type_counts)) {
-        category_values_[8] = kFullHouseValue;
-    }
-
-    if (HasSmallStraight(dice_type_counts)) {
-        category_values_[9] = kSmallStraightValue;
-    }
-
-    if (HasLargeStraight(dice_type_counts)) {
-        category_values_[10] = kLargeStraightValue;
-    }
-
-    if (HasYahtzee(dice_type_counts)) {
-        category_values_[11] = kYahtzeeValue;
-    }
-
-    category_values_[12] = dice_total; // Chance
+    if (HasThreeOfAKind(counts)) category_values_[6] = dice_total;
+    if (HasFourOfAKind(counts)) category_values_[7] = dice_total;
+    if (HasFullHouse(counts)) category_values_[8] = kFullHouseValue;
+    if (HasSmallStraight(counts)) category_values_[9] = kSmallStraightValue;
+    if (HasLargeStraight(counts)) category_values_[10] = kLargeStraightValue;
+    if (HasYahtzee(counts)) HandleYahtzee(dice_total);
+    category_values_[12] = dice_total;          // Chance
 }
 
 std::array<int, kMaxDieValue> Engine::CountDiceTypes() {
-    std::array<int, kMaxDieValue> dice_type_counts;
-    dice_type_counts.fill(0);
+    std::array<int, kMaxDieValue> counts;
+    counts.fill(0);
     for (int i = 0; i < kNumDice; i++) {
         int val = dice_[i].value;
-        dice_type_counts[val - 1]++;
+        counts[val - 1]++;
     }
-    return dice_type_counts;
+    return counts;
 }
 
 bool Engine::HasThreeOfAKind(std::array<int, kMaxDieValue> counts) {
@@ -149,7 +138,20 @@ bool Engine::HasFourOfAKind(std::array<int, kMaxDieValue> counts) {
 }
 
 bool Engine::HasFullHouse(std::array<int, kMaxDieValue> counts) {
-    return HasThreeOfAKind(counts) && std::any_of(counts.begin(), counts.end(), [](int i){return i==2;});
+    return HasThreeOfAKind(counts) &&
+           std::any_of(counts.begin(), counts.end(), [](int i){return i==2;});
+}
+
+bool Engine::HasSmallStraight(std::array<int, kMaxDieValue> counts) {
+    return CalculateLongestStraight(counts) >= 4;
+}
+
+bool Engine::HasLargeStraight(std::array<int, kMaxDieValue> counts) {
+    return CalculateLongestStraight(counts) == 5;
+}
+
+bool Engine::HasYahtzee(std::array<int, kMaxDieValue> counts) {
+    return std::any_of(counts.begin(), counts.end(), [](int i){return i==5;});
 }
 
 int Engine::CalculateLongestStraight(std::array<int, kMaxDieValue> counts) {
@@ -168,14 +170,14 @@ int Engine::CalculateLongestStraight(std::array<int, kMaxDieValue> counts) {
     return longest;
 }
 
-bool Engine::HasSmallStraight(std::array<int, kMaxDieValue> counts) {
-    return CalculateLongestStraight(counts) >= 4;
-}
-
-bool Engine::HasLargeStraight(std::array<int, kMaxDieValue> counts) {
-    return CalculateLongestStraight(counts) == 5;
-}
-
-bool Engine::HasYahtzee(std::array<int, kMaxDieValue> counts) {
-    return std::any_of(counts.begin(), counts.end(), [](int i){return i==5;});
+void Engine::HandleYahtzee(int dice_total) {
+    if (yahtzee_bonus_enabled_) score_ += kYahtzeeBonusValue;
+    if (yahtzee_category_filled_) {
+        category_values_[6] = dice_total;
+        category_values_[7] = dice_total;
+        category_values_[8] = kFullHouseValue;
+        category_values_[9] = kSmallStraightValue;
+        category_values_[10] = kLargeStraightValue;
+    }
+    category_values_[11] = kYahtzeeValue;
 }
