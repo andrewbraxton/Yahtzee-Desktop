@@ -24,3 +24,5 @@
     * Actual game logic was surprisingly simple, the difficult parts were figuring out the best data structures to use (good thing this isn't CS 225 yet), working with the arcane STL functions (why can you not call .contains() on a map???), and working out the logic of when GUI elements should enable/disable
     * Originally had all of my element enabling/disabling in listener functions but realized the logic was becoming difficult to parse and having it scattered everywhere was annoying
         * Moved all of it to `ofApp::update()` and the code is now much more organized and understandable
+    * Cleaned up and implemented some remaining minor pieces of logic: joker rules, Yahtzee bonuses, and starting a new game
+* Lastly, began putting finishing touches on visual improvements (fonts, text padding, etc.), code style, and documentation
