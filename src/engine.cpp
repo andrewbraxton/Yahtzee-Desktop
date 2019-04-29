@@ -7,6 +7,10 @@
 using namespace yahtzee;
 
 Engine::Engine() {
+    Setup();
+}
+
+void Engine::Setup() {
     state_ = PRE_GAME;
     round_number_ = 1;
     roll_number_ = 0;

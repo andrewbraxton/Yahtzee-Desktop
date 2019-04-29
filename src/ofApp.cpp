@@ -28,21 +28,24 @@ void ofApp::setup() {
     dice[i].resize(kDieSize, kDieSize);
   }
 
+  // setup post-game menu
+  game_over.setup("Game over!\nPress 'r' to play again or ESC to exit.\nFinal score: ", "12", kPostGameMenuSize, kPostGameMenuSize);
+
   roll_sound.load("/sounds/diceroll.mp3");
 }
 
 void ofApp::update() {
-  // update the category value labels
+  // update the category value labels for non-selected categories
   auto new_values = engine.GetCategoryValues();
   for (int i = 0; i < kNumCategories; i++) {
-    category_values[i] = std::to_string(new_values[i]);
+    if (!category_toggles[i]) {
+      category_values[i] = std::to_string(new_values[i]);
+    }
   }
 
-  // update the name of the roll button
+  // update the roll, score, and bonus elements
   std::string roll_number = std::to_string(engine.GetRollNumber());
   roll.setName("Roll [SPACE] (" + roll_number + "/3)");
-
-  // update the score and bonus elements
   score = std::to_string(engine.GetScore());
   if (engine.UpperSectionBonusEarned()) {
     bonus = "Earned";
@@ -51,7 +54,7 @@ void ofApp::update() {
     bonus = std::to_string(engine.GetUpperSectionScore()) + "/63";
   }
 
-  // enable/disable elements as needed
+  // enable/disable GUI elements as needed
   switch (engine.GetGameState()) {
     // disable everything except roll
     case PRE_GAME:
@@ -111,9 +114,15 @@ void ofApp::draw() {
 
   // draw from bottom up
   for (int i = 0; i < kNumDice; i++) {
-    dice[i].draw(kDieSize * i, kWindowSize - 0 - kDieSize);
-    keeps[i].setPosition(kKeepSizeX * i, kWindowSize - 0 - kDieSize - kKeepSizeY);
+    dice[i].draw(kDieSize * i, kWindowSize - kDieSize);
+    keeps[i].setPosition(kKeepSizeX * i, kWindowSize - kDieSize - kKeepSizeY);
     keeps[i].draw();
+  }
+
+  if (engine.GetGameState() == END_GAME) {
+    game_over = std::to_string(engine.GetScore());
+    game_over.setPosition(0.25 * kWindowSize, 0.25 * kWindowSize);
+    game_over.draw();
   }
 }
 
@@ -166,13 +175,19 @@ void ofApp::keyPressed(int key) {
     case BETWEEN_ROUNDS:
         if (key == ' ') rollButtonPressed();
         break; 
-    // don't allow rolling or keeping
+    // only allow starting a new game
     case END_GAME:
+        if (key == 'r') StartNewGame();
         break;
     // should not execute
     default:
         assert(false);
   }
+}
+
+void ofApp::StartNewGame() {
+  setup();
+  engine.Setup();
 }
 
 std::string ofApp::GetImagePath(int value) {

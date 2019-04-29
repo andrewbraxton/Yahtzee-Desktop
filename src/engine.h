@@ -44,6 +44,7 @@ class Engine {
 
     public:
         Engine();
+        void Setup();
 
         void RollDice();
         void UpdateKeepFlag(int index, bool keep);

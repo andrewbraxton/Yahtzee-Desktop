@@ -19,6 +19,7 @@ class ofApp : public ofBaseApp {
   const float kCategorySizeX = 0.50 * kWindowSize;
   const float kCategorySizeY = 0.10 * kWindowSize;
   const float kCategoryValueSize = kCategorySizeY;
+  const float kPostGameMenuSize = 0.50 * kWindowSize;
   const int kTextPadding = 30;
 
   void setup();
@@ -40,11 +41,13 @@ class ofApp : public ofBaseApp {
   ofxLabel score;
   std::array<ofxToggle, yahtzee::kNumDice> keeps;
   std::array<ofImage, yahtzee::kNumDice> dice;
+  ofxLabel game_over; // post-game menu
   
   // Sound effects
   ofSoundPlayer roll_sound;
 
  private:
+  void StartNewGame();
   std::string GetImagePath(int value); // for locating diceX.png, X is 1-6 obv
 
 };
