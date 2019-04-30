@@ -3,6 +3,7 @@
 using namespace yahtzee;
 
 void ofApp::setup() {
+  ofxGuiSetFont("/fonts/Roboto/Roboto-Light.ttf", kTextSize);
   ofxGuiSetTextPadding(kTextPadding);
 
   // setup category toggles and value labels
@@ -14,7 +15,7 @@ void ofApp::setup() {
 
   // setup bonus, roll, and score elements
   bonus.setup("Bonus", "0/63", kCategorySizeX, kCategorySizeY);
-  roll.setup("Roll [SPACE] (0/3)", kRollSizeX, kRollSizeY);
+  roll.setup("Roll (0/3)", kRollSizeX, kRollSizeY);
   roll.addListener(this, &ofApp::rollButtonPressed);
   score.setup("Score", "0", kScoreSizeX, kScoreSizeY);
 
@@ -29,7 +30,8 @@ void ofApp::setup() {
   }
 
   // setup post-game menu
-  game_over.setup("Game over!\nPress 'r' to play again or ESC to exit.\nFinal score: ", "12", kPostGameMenuSize, kPostGameMenuSize);
+  game_over.setup("Game over!\nPress 'r' to play again or ESC to exit.\nFinal score", "12", kPostGameMenuSizeX, kPostGameMenuSizeY);
+  game_over.setBackgroundColor(ofColor::darkCyan);
 
   roll_sound.load("/sounds/diceroll.mp3");
 }
@@ -45,7 +47,7 @@ void ofApp::update() {
 
   // update the roll, score, and bonus elements
   std::string roll_number = std::to_string(engine.GetRollNumber());
-  roll.setName("Roll [SPACE] (" + roll_number + "/3)");
+  roll.setName("Roll (" + roll_number + "/3) [SPACE]");
   score = std::to_string(engine.GetScore());
   if (engine.UpperSectionBonusEarned()) {
     bonus = "Earned";
@@ -121,7 +123,7 @@ void ofApp::draw() {
 
   if (engine.GetGameState() == END_GAME) {
     game_over = std::to_string(engine.GetScore());
-    game_over.setPosition(0.25 * kWindowSize, 0.25 * kWindowSize);
+    game_over.setPosition(0.10 * kWindowSize, 0.40 * kWindowSize);
     game_over.draw();
   }
 }

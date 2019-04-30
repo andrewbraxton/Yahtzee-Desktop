@@ -19,7 +19,9 @@ class ofApp : public ofBaseApp {
   const float kCategorySizeX = 0.50 * kWindowSize;
   const float kCategorySizeY = 0.10 * kWindowSize;
   const float kCategoryValueSize = kCategorySizeY;
-  const float kPostGameMenuSize = 0.50 * kWindowSize;
+  const float kPostGameMenuSizeX = 0.80 * kWindowSize;
+  const float kPostGameMenuSizeY = 0.20 * kWindowSize;
+  const int kTextSize = 20;
   const int kTextPadding = 30;
 
   void setup();
