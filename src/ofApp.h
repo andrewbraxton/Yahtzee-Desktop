@@ -7,7 +7,7 @@
 
 class ofApp : public ofBaseApp {
  public:
-
+  // constants for GUI element sizing
   static const int kWindowSize = 1600;
   const float kDieSize = 0.20 * kWindowSize;
   const float kKeepSizeX = kDieSize;
@@ -24,32 +24,37 @@ class ofApp : public ofBaseApp {
   const int kTextSize = 20;
   const int kTextPadding = 30;
 
+  // openFrameworks functions
   void setup();
   void update();
   void draw();
-
   void keyPressed(int key);
+
+  // button listeners
   void rollButtonPressed();
   void categoryPressed(const void* sender, bool& toggle_on);
   void keepTogglePressed(const void* sender, bool& toggle_on);
 
+  // game engine
   yahtzee::Engine engine;
 
   // GUI elements, top to bottom
-  std::array<ofxToggle, yahtzee::kNumCategories> category_toggles;
+  std::vector<ofxToggle> category_toggles;
   std::array<ofxLabel, yahtzee::kNumCategories> category_values;
   ofxLabel bonus;
   ofxButton roll;
   ofxLabel score;
-  std::array<ofxToggle, yahtzee::kNumDice> keeps;
+  std::vector<ofxToggle> keeps;
   std::array<ofImage, yahtzee::kNumDice> dice;
-  ofxLabel game_over; // post-game menu
-  
+  ofxLabel game_over;  // post-game menu
+
   // Sound effects
   ofSoundPlayer roll_sound;
 
  private:
-  void StartNewGame();
-  std::string GetImagePath(int value); // for locating diceX.png, X is 1-6 obv
-
+  void StartNewGame();  // calls ofApp::setup() and Engine::Setup()
+  std::string GetImagePath(int value);  // for locating diceX.png
+  void EnableAll(std::vector<ofxToggle>& toggles);
+  void EnableAllUnselected(std::vector<ofxToggle>& toggles);
+  void DisableAll(std::vector<ofxToggle>& toggles);
 };
