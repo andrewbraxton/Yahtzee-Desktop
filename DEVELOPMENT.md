@@ -25,4 +25,4 @@
     * Originally had all of my element enabling/disabling in listener functions but realized the logic was becoming difficult to parse and having it scattered everywhere was annoying
         * Moved all of it to `ofApp::update()` and the code is now much more organized and understandable
     * Cleaned up and implemented some remaining minor pieces of logic: joker rules, Yahtzee bonuses, and starting a new game
-* Lastly, began putting finishing touches on visual improvements (fonts, text padding, etc.), code style, and documentation
+* Lastly, put the finishing touches on visual improvements (fonts, text padding, etc.), code style, and documentation
