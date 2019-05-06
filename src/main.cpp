@@ -1,7 +1,8 @@
 #include "ofApp.h"
 #include "ofMain.h"
 
-int main() {
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
+                   LPSTR lpCmdLine, int nShowCmd) {
   ofGLFWWindowSettings settings;
   settings.setSize(ofApp::kWindowSize, ofApp::kWindowSize);
   settings.resizable = false;
