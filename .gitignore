@@ -1,6 +1,6 @@
 .vs/
 .vscode/
-final-project-andrewbraxton.vcxproj.user
+*.vcxproj.user
 src/.vscode/
 obj/
 
