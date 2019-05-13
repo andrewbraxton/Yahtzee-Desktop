@@ -2,6 +2,11 @@
 
 using namespace yahtzee;
 
+ofApp::ofApp(int window_size) {
+  kWindowSize = window_size;
+  SetupGUISizes();
+}
+
 void ofApp::setup() {
   ofxGuiSetFont("/fonts/Roboto/Roboto-Light.ttf", kTextSize);
   ofxGuiSetTextPadding(kTextPadding);
@@ -198,6 +203,23 @@ void ofApp::keyPressed(int key) {
     default:
       assert(false);
   }
+}
+
+void ofApp::SetupGUISizes() {
+  kDieSize = 0.20 * kWindowSize;
+  kKeepSizeX = kDieSize;
+  kKeepSizeY = 0.05 * kWindowSize;
+  kRollSizeX = 0.75 * kWindowSize;
+  kRollSizeY = 0.05 * kWindowSize;
+  kScoreSizeX = kWindowSize - kRollSizeX;
+  kScoreSizeY = kRollSizeY;
+  kCategorySizeX = 0.50 * kWindowSize;
+  kCategorySizeY = 0.10 * kWindowSize;
+  kCategoryValueSize = kCategorySizeY;
+  kPostGameMenuSizeX = 0.80 * kWindowSize;
+  kPostGameMenuSizeY = 0.20 * kWindowSize;
+  kTextSize = 0.0125 * kWindowSize;
+  kTextPadding = 0.01875 * kWindowSize;
 }
 
 void ofApp::StartNewGame() {

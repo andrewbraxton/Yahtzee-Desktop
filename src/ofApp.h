@@ -7,22 +7,24 @@
 
 class ofApp : public ofBaseApp {
  public:
-  // constants for GUI element sizing
-  static const int kWindowSize = 1600;
-  const float kDieSize = 0.20 * kWindowSize;
-  const float kKeepSizeX = kDieSize;
-  const float kKeepSizeY = 0.05 * kWindowSize;
-  const float kRollSizeX = 0.75 * kWindowSize;
-  const float kRollSizeY = 0.05 * kWindowSize;
-  const float kScoreSizeX = kWindowSize - kRollSizeX;
-  const float kScoreSizeY = kRollSizeY;
-  const float kCategorySizeX = 0.50 * kWindowSize;
-  const float kCategorySizeY = 0.10 * kWindowSize;
-  const float kCategoryValueSize = kCategorySizeY;
-  const float kPostGameMenuSizeX = 0.80 * kWindowSize;
-  const float kPostGameMenuSizeY = 0.20 * kWindowSize;
-  const int kTextSize = 20;
-  const int kTextPadding = 30;
+  ofApp(int window_size);
+
+  // variables for GUI element sizing
+  int kWindowSize;
+  float kDieSize;
+  float kKeepSizeX;
+  float kKeepSizeY;
+  float kRollSizeX;
+  float kRollSizeY;
+  float kScoreSizeX;
+  float kScoreSizeY;
+  float kCategorySizeX;
+  float kCategorySizeY;
+  float kCategoryValueSize;
+  float kPostGameMenuSizeX;
+  float kPostGameMenuSizeY;
+  int kTextSize;
+  int kTextPadding;
 
   // openFrameworks functions
   void setup();
@@ -52,6 +54,7 @@ class ofApp : public ofBaseApp {
   ofSoundPlayer roll_sound;
 
  private:
+  void SetupGUISizes();
   void StartNewGame();  // calls ofApp::setup() and Engine::Setup()
   std::string GetImagePath(int value);  // for locating diceX.png
   void EnableAll(std::vector<ofxToggle>& toggles);
