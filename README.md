@@ -1,5 +1,4 @@
 # Yahtzee Desktop Application
-## CS 126 Final Project
 A desktop application for playing a single-player game of Yahtzee.
 
 ### Build instructions
