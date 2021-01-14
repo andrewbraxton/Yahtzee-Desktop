@@ -1,7 +1,7 @@
 #include "engine.h"
-
 #include "ofMain.h"
-
+#include <string>
+#include <array>
 #include <algorithm>
 
 using namespace yahtzee;
