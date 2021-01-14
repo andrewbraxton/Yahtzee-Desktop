@@ -45,6 +45,7 @@ class Engine {
   int GetRollNumber();
   int GetScore();
   int GetUpperSectionScore();
+  int GetUpperSectionDiff();
   bool UpperSectionBonusEarned();
   std::array<int, kNumDice> GetDiceValues();
   std::array<int, kNumCategories> GetCategoryValues();
@@ -76,6 +77,7 @@ class Engine {
   int round_number_;
   int score_;
   int upper_section_score_;
+  int upper_section_diff_;
   bool upper_section_bonus_earned_;
   bool yahtzee_bonus_enabled_;
   bool yahtzee_category_filled_;  // for joker rules

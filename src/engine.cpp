@@ -14,6 +14,7 @@ void Engine::Setup() {
   roll_number_ = 0;
   score_ = 0;
   upper_section_score_ = 0;
+  upper_section_diff_ = 0;
   upper_section_bonus_earned_ = false;
   yahtzee_bonus_enabled_ = false;
   yahtzee_category_filled_ = false;
@@ -51,6 +52,7 @@ void Engine::AddCategoryValueToScore(int index) {
   score_ += value;
   if (index < 6) {
     upper_section_score_ += value;
+    upper_section_diff_ += (value - ((index + 1) * 3));
   }
   if (!upper_section_bonus_earned_ &&
       upper_section_score_ >= kUpperSectionBonusThreshold) {
@@ -73,6 +75,8 @@ int Engine::GetRollNumber() { return roll_number_; }
 int Engine::GetScore() { return score_; }
 
 int Engine::GetUpperSectionScore() { return upper_section_score_; }
+
+int Engine::GetUpperSectionDiff() { return upper_section_diff_; }
 
 bool Engine::UpperSectionBonusEarned() { return upper_section_bonus_earned_; }
 

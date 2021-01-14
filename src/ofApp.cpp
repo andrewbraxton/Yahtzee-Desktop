@@ -1,3 +1,5 @@
+#include <sstream>
+#include <iostream>
 #include "ofApp.h"
 
 using namespace yahtzee;
@@ -24,6 +26,8 @@ void ofApp::setup() {
 
   // setup bonus, roll, and score elements
   bonus.setup("Bonus", "0/63", kCategorySizeX, kCategorySizeY);
+  bonus.setBorderColor(ofColor::red);
+  //bonus.setTextColor(ofColor::red);
   roll.setup("Roll (0/3)", kRollSizeX, kRollSizeY);
   roll.addListener(this, &ofApp::rollButtonPressed);
   score.setup("Score", "0", kScoreSizeX, kScoreSizeY);
@@ -66,8 +70,20 @@ void ofApp::update() {
   if (engine.UpperSectionBonusEarned()) {
     bonus = "Earned";
   } else {
-    int upper_section_score = engine.GetUpperSectionScore();
-    bonus = std::to_string(engine.GetUpperSectionScore()) + "/63";
+    int upper_score = engine.GetUpperSectionScore();
+    int upper_diff = engine.GetUpperSectionDiff();
+
+    ostringstream b_strm;
+    b_strm << upper_score << "/63";
+    b_strm << "  ";
+    b_strm << "(" << std::showpos << upper_diff << ")";
+
+    bonus = b_strm.str();
+    if (upper_diff < 0) {
+      bonus.setTextColor(ofColor::red);
+    } else {
+      bonus.setTextColor(ofColor::green);
+    }
   }
 
   // enable/disable GUI elements as needed
